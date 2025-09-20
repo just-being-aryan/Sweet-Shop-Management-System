@@ -1,3 +1,16 @@
+import { jest } from '@jest/globals';
+const mockCreate = jest.fn().mockResolvedValue({
+  choices: [{ message: { content: '["Chocolate","Candy"]' } }]
+});
+
+jest.unstable_mockModule("openai", () => ({
+  default: class {
+    chat = {
+      completions: { create: mockCreate }
+    };
+  }
+}));
+
 import request from "supertest";
 import app from "../server.js";
 
@@ -7,7 +20,7 @@ describe("Auth API", () => {
       .post("/api/auth/register")
       .send({
         name: "Test User",
-        email: "test@example.com",
+        email: "test@example5.com",
         password: "password123"
       });
 

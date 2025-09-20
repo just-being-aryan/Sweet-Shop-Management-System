@@ -1,4 +1,3 @@
-// middleware/authMiddleware.js
 import jwt from "jsonwebtoken";
 import ApiError from "../utils/apiError.js";
 
@@ -12,8 +11,7 @@ export const protect = (req, res, next) => {
     try {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      req.user = decoded; 
+      req.user = decoded;
       return next();
     } catch (err) {
       return next(new ApiError(401, "Not authorized, token failed"));
@@ -35,3 +33,5 @@ export const authorizeRoles = (...roles) => {
     next();
   };
 };
+
+export const admin = authorizeRoles("admin");
