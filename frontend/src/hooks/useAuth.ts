@@ -9,7 +9,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
   isAdmin: boolean;
@@ -25,7 +25,7 @@ export const useAuth = () => {
   return context;
 };
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://your-backend-url.com';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export const useAuthState = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -60,7 +60,7 @@ export const useAuthState = () => {
 
       const data = await response.json();
       localStorage.setItem('token', data.token);
-      
+
       const payload = JSON.parse(atob(data.token.split('.')[1]));
       setUser({
         id: payload.id,
@@ -69,82 +69,43 @@ export const useAuthState = () => {
       });
     } catch (error) {
       console.error('Login error:', error);
-      
-      // Check if it's a network error (backend not available)
-      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
-        // Fallback to demo mode for testing
-        const mockToken = btoa(JSON.stringify({
-          id: '1',
-          email: email,
-          role: email.includes('admin') ? 'admin' : 'user'
-        }));
-        
-        localStorage.setItem('token', `mock.${mockToken}.signature`);
-        setUser({
-          id: '1',
-          email: email,
-          role: email.includes('admin') ? 'admin' : 'user',
-        });
-        
-        return; // Success in demo mode
-      }
-      
       throw error;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const register = async (email: string, password: string) => {
-  setIsLoading(true);
-  try {
-    const response = await fetch(`${API_BASE}/api/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `Registration failed: ${response.status}`);
-    }
-
-    await login(email, password);
-  } catch (error) {
-    console.error('Registration error:', error);
-
-    // Check if it's a network error (backend not available)
-    if (error instanceof TypeError && error.message.includes('fetch')) {
-      // Fallback to demo mode for testing
-      const mod = await import('./useMockMode');
-      const { mockRegister } = mod.useMockMode();
-      await mockRegister(email, password);
-
-      // Simulate successful registration
-      const mockToken = btoa(JSON.stringify({
-        id: '1',
-        email: email,
-        role: email.includes('admin') ? 'admin' : 'user'
-      }));
-
-      localStorage.setItem('token', `mock.${mockToken}.signature`);
-      setUser({
-        id: '1',
-        email: email,
-        role: email.includes('admin') ? 'admin' : 'user',
+  const register = async (name: string, email: string, password: string) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${API_BASE}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password }),
       });
 
-      return; // Success in demo mode
-    }
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || `Registration failed: ${response.status}`);
+      }
 
-    throw error;
-  } finally {
-    setIsLoading(false);
-  }
-};
+      const data = await response.json();
+      setUser({
+        id: data.user.id,
+        email: data.user.email,
+        role: data.user.role,
+      });
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('sweetDreamsCart'); // Clear cart on logout
     setUser(null);
   };
 

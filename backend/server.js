@@ -16,7 +16,6 @@ app.use(express.json());
 
 
 const allowedOrigins = [
-  "http://localhost:8000", 
   process.env.FRONTEND_URL 
 ];
 

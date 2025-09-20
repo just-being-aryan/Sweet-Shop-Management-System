@@ -2,7 +2,9 @@ import React from 'react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ShoppingCart, Package } from 'lucide-react';
+import { ShoppingCart, Package, Plus, Minus } from 'lucide-react';
+import { useCart } from '@/contexts/CartContext';
+import { useAuth } from '@/hooks/useAuth';
 
 interface Sweet {
   id: string;
@@ -15,18 +17,26 @@ interface Sweet {
 
 interface SweetCardProps {
   sweet: Sweet;
-  onPurchase: (id: string) => void;
   isAdmin?: boolean;
   onEdit?: (sweet: Sweet) => void;
 }
 
 export const SweetCard: React.FC<SweetCardProps> = ({ 
   sweet, 
-  onPurchase, 
   isAdmin = false, 
   onEdit 
 }) => {
+  const { user } = useAuth();
+  const { addToCart, getCartItem, updateQuantity } = useCart();
+  
+  // Only get cart item if user is logged in to prevent issues
+  const cartItem = user ? getCartItem(sweet.id) : null;
   const isOutOfStock = sweet.quantity === 0;
+  const isInCart = user && !!cartItem;
+  const canAddToCart = user && !isOutOfStock;
+  
+  // Force re-render when cart changes by using sweet.id as dependency
+  const cartItemQuantity = cartItem ? cartItem.quantity : 0;
 
   return (
     <Card className="group hover:shadow-sweet transition-all duration-300 hover:scale-105 overflow-hidden bg-gradient-to-br from-card to-card/50">
@@ -40,7 +50,7 @@ export const SweetCard: React.FC<SweetCardProps> = ({
       
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="font-semibold text-lg text-foreground group-hover:text-candy-pink transition-colors">
+          <h3 className="font-semibold text-lg text-gray-900 dark:text-white group-hover:text-candy-pink transition-colors">
             {sweet.name}
           </h3>
           <Badge variant="secondary" className="text-xs">
@@ -52,9 +62,9 @@ export const SweetCard: React.FC<SweetCardProps> = ({
           <span className="text-2xl font-bold text-candy-pink">
             ${sweet.price.toFixed(2)}
           </span>
-          <div className="flex items-center text-sm text-muted-foreground">
+          <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
             <Package className="h-4 w-4 mr-1" />
-            <span className={isOutOfStock ? 'text-destructive' : 'text-candy-purple'}>
+            <span className={isOutOfStock ? 'text-red-600 dark:text-red-400' : 'text-candy-purple'}>
               {sweet.quantity} left
             </span>
           </div>
@@ -63,19 +73,46 @@ export const SweetCard: React.FC<SweetCardProps> = ({
 
       <CardFooter className="p-4 pt-0">
         <div className="flex gap-2 w-full">
-          <Button 
-            variant="purchase"
-            className="flex-1"
-            disabled={isOutOfStock}
-            onClick={() => onPurchase(sweet.id)}
-          >
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
-          </Button>
+          {!isInCart ? (
+            <Button 
+              variant="default"
+              className={canAddToCart 
+                ? "flex-1 bg-gradient-to-r from-candy-pink to-candy-purple hover:from-candy-pink/80 hover:to-candy-purple/80 text-white"
+                : "flex-1 bg-gray-400 text-gray-600 cursor-not-allowed"
+              }
+              disabled={!canAddToCart}
+              onClick={() => user && canAddToCart && addToCart(sweet)}
+            >
+              <ShoppingCart className="h-4 w-4 mr-2" />
+              {!user ? 'Sign In to Add to Cart' : isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+            </Button>
+          ) : (
+            <div className="flex items-center justify-between flex-1">
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={() => user && cartItem && updateQuantity(sweet.id, cartItem.quantity - 1)}
+                disabled={!user || !cartItem || cartItem.quantity <= 1}
+              >
+                <Minus className="h-4 w-4" />
+              </Button>
+              <span className="font-semibold text-lg px-4 text-gray-900 dark:text-white">
+                {cartItemQuantity} in cart
+              </span>
+              <Button 
+                variant="outline"
+                size="sm"
+                onClick={() => user && cartItem && updateQuantity(sweet.id, cartItem.quantity + 1)}
+                disabled={!user || !cartItem || cartItem.quantity >= sweet.quantity}
+              >
+                <Plus className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
           
           {isAdmin && onEdit && (
             <Button 
-              variant="sweet"
+              variant="secondary"
               size="sm"
               onClick={() => onEdit(sweet)}
             >

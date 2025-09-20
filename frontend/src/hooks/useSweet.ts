@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { mockSweets } from './useMockMode';
 
 interface Sweet {
   id: string;
@@ -11,7 +10,7 @@ interface Sweet {
   image?: string;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token');
@@ -41,19 +40,6 @@ export const useSweets = () => {
       setSweets(data);
     } catch (error) {
       console.error('Fetch sweets error:', error);
-      
-      // Fallback to mock data if backend is not available
-      if (error instanceof TypeError && error.message.includes('fetch')) {
-        const { mockSweets } = await import('./useMockMode');
-        setSweets(mockSweets);
-        
-        toast({
-          title: "Demo Mode",
-          description: "Using sample data - backend not connected",
-        });
-        return;
-      }
-      
       toast({
         title: "Error",
         description: "Failed to load sweets",

@@ -60,7 +60,7 @@ export const Login: React.FC = () => {
                 type="email"
                 placeholder="Enter your email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 required
                 className="border-candy-pink/20 focus:border-candy-pink"
               />
@@ -73,7 +73,7 @@ export const Login: React.FC = () => {
                 type="password"
                 placeholder="Enter your password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 required
                 className="border-candy-purple/20 focus:border-candy-purple"
               />

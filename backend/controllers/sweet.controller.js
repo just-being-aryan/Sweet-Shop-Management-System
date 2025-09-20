@@ -56,11 +56,16 @@ export const purchaseSweet = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Sweet not found");
   }
-  if (sweet.quantity <= 0) {
+  
+  const { quantity = 1 } = req.body;
+  const purchaseQuantity = Number(quantity);
+  
+  if (sweet.quantity < purchaseQuantity) {
     res.status(400);
-    throw new Error("Sweet out of stock");
+    throw new Error(`Only ${sweet.quantity} ${sweet.name} available, requested ${purchaseQuantity}`);
   }
-  sweet.quantity -= 1;
+  
+  sweet.quantity -= purchaseQuantity;
   await sweet.save();
   res.status(200).json(sweet);
 });

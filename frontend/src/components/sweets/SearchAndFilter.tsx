@@ -25,7 +25,7 @@ export const SearchAndFilter: React.FC<SearchAndFilterProps> = ({
         <Input
           placeholder="Search for delicious sweets..."
           value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => onSearchChange(e.target.value)}
           className="pl-10 bg-background/50 backdrop-blur border-candy-pink/20 focus:border-candy-pink"
         />
       </div>

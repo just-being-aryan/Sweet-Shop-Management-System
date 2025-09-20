@@ -1,153 +1,107 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-   --background: 340 30% 98%;
-    --foreground: 340 15% 15%;
+  --background: 340 30% 98%;
+  --foreground: 340 15% 15%;
 
-    --card: 340 20% 97%;
-    --card-foreground: 340 15% 15%;
+  --card: 340 20% 97%;
+  --card-foreground: 340 15% 15%;
 
-    --popover: 340 20% 97%;
-    --popover-foreground: 340 15% 15%;
+  --popover: 340 20% 97%;
+  --popover-foreground: 340 15% 15%;
 
-    --primary: 330 70% 65%;
-    --primary-foreground: 340 30% 98%;
+  --primary: 330 70% 65%;
+  --primary-foreground: 340 30% 98%;
 
-    --secondary: 35 60% 85%;
-    --secondary-foreground: 35 30% 25%;
+  --secondary: 35 60% 85%;
+  --secondary-foreground: 35 30% 25%;
 
-    --muted: 340 15% 92%;
-    --muted-foreground: 340 10% 45%;
+  --muted: 340 15% 92%;
+  --muted-foreground: 340 10% 45%;
 
-    --accent: 280 60% 75%;
-    --accent-foreground: 280 30% 15%;
+  --accent: 280 60% 75%;
+  --accent-foreground: 280 30% 15%;
 
-    --destructive: 0 70% 60%;
-    --destructive-foreground: 340 30% 98%;
+  --destructive: 0 70% 60%;
+  --destructive-foreground: 340 30% 98%;
 
-    --border: 340 20% 88%;
-    --input: 340 20% 90%;
-    --ring: 330 70% 65%;
+  --border: 340 20% 88%;
+  --input: 340 20% 90%;
+  --ring: 330 70% 65%;
 
-    --radius: 0.75rem;
+  --radius: 0.75rem;
 
-    /* Sweet Shop Custom Colors */
-    --candy-pink: 330 70% 65%;
-    --candy-purple: 280 60% 75%;
-    --caramel: 35 60% 70%;
-    --chocolate: 25 30% 35%;
-    --mint: 150 50% 70%;
-    --vanilla: 45 40% 90%;
+  /* Sweet Shop Custom Colors */
+  --candy-pink: 330 70% 65%;
+  --candy-purple: 280 60% 75%;
+  --caramel: 35 60% 70%;
+  --chocolate: 25 30% 35%;
+  --mint: 150 50% 70%;
+  --vanilla: 45 40% 90%;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--candy-pink)), hsl(var(--candy-purple)));
-    --gradient-secondary: linear-gradient(135deg, hsl(var(--caramel)), hsl(var(--vanilla)));
-    --gradient-hero: linear-gradient(135deg, hsl(var(--candy-pink)) 0%, hsl(var(--candy-purple)) 50%, hsl(var(--caramel)) 100%);
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, hsl(var(--candy-pink)), hsl(var(--candy-purple)));
+  --gradient-secondary: linear-gradient(135deg, hsl(var(--caramel)), hsl(var(--vanilla)));
+  --gradient-hero: linear-gradient(135deg, hsl(var(--candy-pink)) 0%, hsl(var(--candy-purple)) 50%, hsl(var(--caramel)) 100%);
 
-    /* Shadows */
-    --shadow-candy: 0 10px 25px -5px hsl(var(--candy-pink) / 0.3);
-    --shadow-sweet: 0 4px 15px -2px hsl(var(--candy-purple) / 0.2);
+  /* Shadows */
+  --shadow-candy: 0 10px 25px -5px hsl(var(--candy-pink) / 0.3);
+  --shadow-sweet: 0 4px 15px -2px hsl(var(--candy-purple) / 0.2);
 
-    /* Animations */
-    --transition-sweet: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Animations */
+  --transition-sweet: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
-
-    --sidebar: hsl(0 0% 98%);
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 240 5.3% 26.1%;
+  --sidebar-primary: 240 5.9% 10%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 240 4.8% 95.9%;
+  --sidebar-accent-foreground: 240 5.9% 10%;
+  --sidebar-border: 220 13% 91%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+  --sidebar: hsl(0 0% 98%);
 }
 
 .dark {
- --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+  --card: 222.2 84% 4.9%;
+  --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+  --popover: 222.2 84% 4.9%;
+  --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    --sidebar: hsl(240 5.9% 10%);
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+  
+  --sidebar-background: 240 5.9% 10%;
+  --sidebar-foreground: 240 4.8% 95.9%;
+  --sidebar-primary: 224.3 76.3% 48%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 240 3.7% 15.9%;
+  --sidebar-accent-foreground: 240 4.8% 95.9%;
+  --sidebar-border: 240 3.7% 15.9%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+  --sidebar: hsl(240 5.9% 10%);
 }
 
 @layer base {
@@ -157,4 +111,30 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Additional Sweet Dreams Styles */
+.hero-title {
+  color: white !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  font-weight: 700;
+}
+
+.brand-name {
+  background: linear-gradient(135deg, #ff6b9d, #c44569);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #f8b500 100%) !important;
+  min-height: 200px;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #ff6b9d 0%, #c44569 50%, #f8b500 100%) !important;
+  background-attachment: fixed;
 }

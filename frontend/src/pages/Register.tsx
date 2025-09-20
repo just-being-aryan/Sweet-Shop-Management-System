@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { ShoppingBag } from 'lucide-react';
 
 export const Register: React.FC = () => {
+  const [name, setName] = useState(''); // added name
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,7 +19,16 @@ export const Register: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
+    if (!name.trim()) {
+      toast({
+        title: "Name Required",
+        description: "Please enter your name",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast({
         title: "Password Mismatch",
@@ -29,16 +39,16 @@ export const Register: React.FC = () => {
     }
 
     try {
-      await register(email, password);
+      await register(name, email, password); // pass name too
       navigate('/');
       toast({
         title: "Welcome to Sweet Dreams!",
         description: "Your account has been created successfully.",
       });
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Registration Failed",
-        description: "Please check your information and try again.",
+        description: error.message || "Please check your information and try again.",
         variant: "destructive",
       });
     }
@@ -58,9 +68,23 @@ export const Register: React.FC = () => {
             Create your account to start shopping
           </CardDescription>
         </CardHeader>
-        
+
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+
+            <div className="space-y-2">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+                required
+                className="border-candy-pink/20 focus:border-candy-pink"
+              />
+            </div>
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -68,12 +92,12 @@ export const Register: React.FC = () => {
                 type="email"
                 placeholder="Enter your email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
                 required
                 className="border-candy-pink/20 focus:border-candy-pink"
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input
@@ -81,7 +105,7 @@ export const Register: React.FC = () => {
                 type="password"
                 placeholder="Create a password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 required
                 className="border-candy-purple/20 focus:border-candy-purple"
               />
@@ -94,7 +118,7 @@ export const Register: React.FC = () => {
                 type="password"
                 placeholder="Confirm your password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
                 required
                 className="border-candy-caramel/20 focus:border-candy-caramel"
               />
